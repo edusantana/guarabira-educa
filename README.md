@@ -1,13 +1,9 @@
-# saber-pb
+# Guarabira Educa
 
-Extensão para o Google Chrome com melhorias para a plataforma do saber do governo do estado da Paraíba.
+Extensão para o Google Chrome com melhorias para a plataforma Guarabira Educa do município de Guarabira - PB.
 
-Página oficial da ferramenta: [https://edusantana.github.io/saber-pb](https://edusantana.github.io/saber-pb)
+## Contato
 
-[![apresentacao-inicial](https://user-images.githubusercontent.com/3603111/81852307-35657880-9531-11ea-9b14-1e9ff0f19d25.png)](https://edusantana.github.io/saber-pb)
+Para sugestões, dúvidas ou reportar problemas, abra uma issue no projeto:
 
-## Desenvolvimento
-
-A equipe de desenvolvimento do saber utiliza:
-
-- [bootstrap 2.3.2](https://getbootstrap.com/2.3.2/components.html)
+[https://github.com/edusantana/guarabira-educa/issues](https://github.com/edusantana/guarabira-educa/issues)

@@ -1,10 +1,10 @@
 {
 	"manifest_version": 3,
-	"version": "2021.12.18",
-	"name": "Saber PB",
-	"short_name": "saber-pb",
-	"description": "Auxilia os professores do governo do estado da Paraíba agilizando a edição da plataforma do saber.",
-	"homepage_url" : "https://edusantana.github.io/saber-pb/",
+	"version": "2026.05.20",
+	"name": "Guarabira Educa",
+	"short_name": "guarabira-educa",
+	"description": "Auxilia os professores do município de Guarabira agilizando a edição da plataforma Guarabira Educa.",
+	"homepage_url" : "https://github.com/edusantana/guarabira-educa",
 	"permissions": [
 		"storage"	
 	],
@@ -17,14 +17,10 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"http://*.saber.pb.gov.br/platform/*",
-				"http://saber.pb.gov.br/platform/*",
-				"https://*.saber.pb.gov.br/platform/*",
-				"https://saber.pb.gov.br/platform/*"
+				"https://guarabira-educa.ids.inf.br/*"
 			],
 			"js": [
-				"js/luxon.min.js",
-				"saber.js"
+				"educa.js"
 			]
 		}
 	]
