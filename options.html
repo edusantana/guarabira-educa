@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Extensão do saber - Opções</title>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="dist/semantic.min.js"></script>
+</head>
+<body>
+
+<div class="ui container">
+
+
+	<div id="status"></div>
+	<div class="four ui buttons">
+		<button id="save" accessKey="s" title="ALT+s para salvar" class="ui primary basic button"><i class="icon save"></i><u>S</u>alvar</button>
+			<div class="or" data-text="ou"></div>
+		<button id="limpar" accessKey="l" title="ALT+l para limpar" class="ui button"><i class="icon trash"></i><u>L</u>impar</button>
+		<button id="guardar" accessKey="g" class="ui button"><i class="icon copy"></i><u>G</u>uardar</button>
+			<div class="or" data-text="ou"></div>
+		<button id="recuperar" accessKey="r" title="ALT+r para recuperar" class="ui button"><i class="icon paste"></i><u>R</u>ecuperar <span id="pilhaStatus"></span></button>
+	</div>
+
+<div class="ui segment">
+	<h2 class="ui dividing header"><i class="sitemap icon"></i>Cadastros </h2>
+	<div id="turmas" style="margin-top: 10px; text-align: center">
+		<label for="turma"><u>T</u>urma:</label>
+		<select accessKey="t" name="turma" id="turma" class="ui dropdown">
+			<!--<option value="1078922">1ª série G - Marketing < Educação Física</option> -->
+		</select>
+		|
+		<button id="abrirTurma" class="ui button" accessKey="b" title="ALT+s para salvar"><i class="external alternate icon"></i>A<u>b</u>rir turma</button>
+		<a href="https://youtu.be/TOT2nJhKlt0"><i class="question circle outline icon"></i></a>
+	</div>
+	<div class="ui form">
+	<div class="field">
+		<div style="" class="field">
+			<textarea id="registros" name="registros" cols="120" rows="12" title="Cole aqui várias linhas copiadas de uma planilha" style="width: 95%"></textarea><br>
+		</div>
+	</div>
+	</div>
+
+	<div style="margin-top: 10px; text-align: center">
+		<div class="ui buttons">
+		<button id="criarAulas" class="ui button" accessKey="a" title="ALT+s para salvar"><i class="book icon"></i>Criar Registros de <u>a</u>ulas</button>
+		<div class="or" data-text="ou"></div>
+		<button id="criarFrequencias" class="ui button" accessKey="q" title="ALT+q"><i class="calendar icon"></i>Criar Registro de fre<u>q</u>uênia</button>
+		</div>
+		<a href="https://youtu.be/TOT2nJhKlt0"><i class="question circle outline icon"></i></a>
+	</div>
+
+</div>
+
+
+<div class="ui segment">
+  <h2 class="ui dividing header"><i class="calendar icon"></i>Frequência</h2>
+	<div class="ui form">
+		<div class="fields">
+			<div class="two wide field">
+				<label>Nº de aulas seguidas</label>
+				<input id="aulas_seguidas" type="number" name="aulas_seguidas" title="Nº de aulas seguidas" min="1", max="10", step="1">
+			</div>
+
+			<div class="two wide field">
+				<label>Presença padrão</label>
+				<select class="ui dropdown" id="presenca">
+					<option value="P">Presente</option>
+					<option value="A">Ausente</option>
+					<option value="N">Não registrado</option>
+				</select>
+			</div>
+
+			<div class="twelve wide field">
+					<label>Justificativa padrão</label>
+					<input id="justificativa" type="text" name="justificativa">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="ui segment">
+
+  <div class="ui right close rail" id="considere_assinatura">
+    <div class="ui segment">
+      Considere realizar assinatura para contribuir com o desenvolvimento de novas funcionalidades.
+    </div>
+  </div>
+
+	<div class="ui ordered steps">
+		<div class="completed step">
+			<div class="content">
+			<div class="title">Instalar</div>
+			<div class="description">Você já instalou a extensão</div>
+			</div>
+		</div>
+		<div class="completed step">
+			<div class="content">
+			<div class="title">Usufuir da extensão</div>
+			<div class="description">Use a extensão sem restrições</div>
+			</div>
+		</div>
+		<div class="active step" id="assinatura_step">
+			<i class="gift icon"></i>
+			<div class="content">
+				<div class="title"><a href="https://sparkle.hotmart.com/u/edusantana82/subscriptions/5970">Realizar assinatura</a></div>
+				<div class="description">Contribuia com o desenvolvimento da extensão.</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui toggle checkbox">
+		<input type="checkbox" id="assinatura">
+		<label>Assinei a extensão</label>
+	</div>
+</div>
+
+	<script src="options.js"></script>
+
+</body>
+</html>
