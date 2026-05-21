@@ -2,6 +2,20 @@
 
 A extensão **Guarabira Educa** adiciona botões extras na página de registro diário para agilizar o preenchimento de turmas.
 
+## Instalação
+
+1. Acesse a página da extensão na Chrome Web Store:
+   **https://chromewebstore.google.com/detail/guarabira-educa/plccgpkejnhojjlehlmgokgekdnlimmh**
+2. Clique em **Adicionar ao Chrome**.
+3. Confirme clicando em **Adicionar extensão**.
+4. Pronto! A extensão estará ativa automaticamente ao acessar o Guarabira Educa.
+
+> A extensão funciona apenas no site **guarabira-educa.ids.inf.br**.
+
+> Do mesmo criador da extensão [Saber PB](https://chromewebstore.google.com/detail/saber-pb/pfnoopdjbdpgegpkihfmlofngfdkjfem).
+
+---
+
 ## Botões
 
 ![Botões da extensão](screenshot/botoes.png)
