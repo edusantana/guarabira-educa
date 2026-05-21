@@ -26,6 +26,7 @@ A extensão **Guarabira Educa** adiciona botões extras na página de registro d
 | **Limpar** | ALT+M | Apaga o conteúdo salvo |
 | **Colar** | ALT+V | Cola o conteúdo salvo nos três campos |
 | **Dividir em 3** | ALT+I | Divide automaticamente o texto do primeiro campo em três partes |
+| **📅 Calendário** | — | Extrai todas as datas do calendário escolar e insere no campo Observações, uma por linha |
 
 ---
 
@@ -52,6 +53,25 @@ Use esse recurso quando você tiver um texto com três frases separadas por pont
 3. Cada frase é distribuída automaticamente: a 1ª no campo Observações, a 2ª em Atividades, a 3ª em Conteúdos.
 
 > **Atenção:** o texto é dividido pelo caractere `.` (ponto final). Certifique-se de que cada parte termina com ponto antes de usar o botão.
+
+---
+
+### Inserir as datas do calendário no campo Observações
+
+Use esse recurso para preencher o campo Observações com todas as datas do calendário escolar listadas na página.
+
+1. Certifique-se de que o campo **Observações** está vazio.
+2. Clique em **📅 Calendário**.
+3. O campo Observações será preenchido com uma data por linha, no formato:
+   ```
+   seg 23 fev
+   ter 24 fev
+   qua 25 fev
+   ...
+   ```
+4. O mesmo conteúdo é copiado automaticamente para a área de transferência.
+
+> **Atenção:** se o campo Observações não estiver vazio, a extensão exibirá uma mensagem de erro e não fará nenhuma alteração.
 
 ---
 

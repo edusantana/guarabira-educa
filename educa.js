@@ -95,6 +95,12 @@ function injetaBotaoCopiarExcluir() {
   btnDividir.title = 'ALT+I — Divide o texto do primeiro editor em frases (pelo ".") e distribui nos demais editores';
   btnDividir.style.cssText = 'background:#fd7e14;color:#fff;border:none;border-radius:4px;padding:6px 18px;cursor:pointer;font-size:14px;';
 
+  var btnCalendario = document.createElement('button');
+  btnCalendario.id = 'educa-calendario-excluir';
+  btnCalendario.innerHTML = '&#128197; Calendário';
+  btnCalendario.title = 'Extrai as datas do calendário e insere no campo Observações (um por linha)';
+  btnCalendario.style.cssText = 'background:#17a2b8;color:#fff;border:none;border-radius:4px;padding:6px 18px;cursor:pointer;font-size:14px;';
+
   var btnAjuda = document.createElement('a');
   btnAjuda.id = 'educa-ajuda';
   btnAjuda.innerHTML = '?';
@@ -109,6 +115,7 @@ function injetaBotaoCopiarExcluir() {
   wrapper.appendChild(btnLimpar);
   wrapper.appendChild(btnColar);
   wrapper.appendChild(btnDividir);
+  wrapper.appendChild(btnCalendario);
   wrapper.appendChild(btnAjuda);
 
   container.insertBefore(wrapper, btnExcluir);
@@ -195,6 +202,39 @@ function injetaBotaoCopiarExcluir() {
         editor.style.backgroundColor = '#fff3cd';
       });
     });
+  });
+
+  document.getElementById('educa-calendario-excluir').addEventListener('click', function () {
+    var editores = document.querySelectorAll('app-diario-escolar-turma-registro-diario .ql-editor');
+    if (!editores.length) return;
+
+    if (editores[0].innerText.trim() !== '') {
+      alert('Este recurso necessita que o editor Observações esteja vazio');
+      return;
+    }
+
+    var datas = document.querySelectorAll('f17-date-scroll .dates');
+    if (!datas.length) {
+      console.log('[educa] Calendário: nenhuma data encontrada');
+      return;
+    }
+
+    var linhas = [];
+    datas.forEach(function (d) {
+      var diaSemana = d.querySelector('.date-dia-semana').innerText.replace(/\.$/, '').trim();
+      var dia = d.querySelector('.date-dia').innerText.trim();
+      var mes = d.querySelector('.date-mes').innerText.replace(/\.$/, '').trim();
+      linhas.push(diaSemana + ' ' + dia + ' ' + mes);
+    });
+
+    editores[0].innerHTML = linhas.map(function (l) { return '<p>' + l + '</p>'; }).join('');
+    editores[0].dispatchEvent(new Event('input', { bubbles: true }));
+    editores[0].style.backgroundColor = '#fff3cd';
+
+    navigator.clipboard.writeText(linhas.join('\n')).then(function () {
+      console.log('[educa] Calendário: texto copiado para clipboard');
+    });
+    console.log('[educa] Calendário: ' + linhas.length + ' datas inseridas');
   });
 }
 

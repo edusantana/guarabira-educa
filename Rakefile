@@ -1,9 +1,9 @@
-require 'date'
+require 'time'
 
 
 desc "Compacta todos os arquivos para gerar uma versão"
 task :zip do
-  versao = Date.today.strftime("%Y.%-m.%-d")
+  versao = Time.now.strftime("%Y.%-m.%-d.%-H%M")
   sh %Q(zip -r guarabira-educa.#{versao}.zip manifest.json educa.js icon*.png)
   puts "NOTE: Lembrar de atualizar versão em manifest.json: #{versao}"
 end
