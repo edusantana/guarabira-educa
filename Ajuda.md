@@ -34,6 +34,8 @@ A extensão **Guarabira Educa** adiciona botões extras na página de registro d
 
 ### Replicar o mesmo registro em várias turmas
 
+![](./screenshot/screen-shot-diario-classe.png)
+
 1. Preencha normalmente os campos de um registro diário.
 2. Clique em **Copiar** (ou ALT+C) — os campos ficam com fundo **verde** confirmando o salvamento.
 3. Abra outra JANELA, Navegue para o registro diário de outra turma. Você ficará com as duas janelas abertas.
@@ -44,6 +46,8 @@ A extensão **Guarabira Educa** adiciona botões extras na página de registro d
 ---
 
 ### Dividir um texto longo em três partes
+
+![](./screenshot/dividir-nos-pontos.png)
 
 Use esse recurso quando você tiver um texto com três frases separadas por ponto (`.`) e quiser distribuí-las automaticamente nos três campos do registro.
 
@@ -57,6 +61,8 @@ Use esse recurso quando você tiver um texto com três frases separadas por pont
 ---
 
 ### Inserir as datas do calendário no campo Observações
+
+![](./screenshot/calendario-exportar.png)
 
 Use esse recurso para preencher o campo Observações com todas as datas do calendário escolar listadas na página.
 
