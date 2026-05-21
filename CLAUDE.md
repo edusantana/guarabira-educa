@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this project is
 
-A Chrome extension (Manifest V3) that helps teachers in Paraíba (Brazil) work more efficiently with the state educational platform at `saber.pb.gov.br`. It injects a UI panel and keyboard shortcuts into the platform's pages.
+A Chrome extension (Manifest V3) that helps teachers in the municipality of Guarabira (PB, Brazil) work more efficiently with the Guarabira Educa educational platform at `guarabira-educa.ids.inf.br`. It injects action buttons and keyboard shortcuts into the platform's daily record (registro diário) pages.
 
 ## Build and packaging
 
@@ -13,9 +13,14 @@ A Chrome extension (Manifest V3) that helps teachers in Paraíba (Brazil) work m
 rake zip
 ```
 
-After running `rake zip`, update the `version` field in `manifest.json` to match the date (`YYYY.MM.DD`).
+After running `rake zip`, update the `version` field in `manifest.json` to match the date (`YYYY.M.D` — no leading zeros, required by Chrome).
 
 There is no test suite and no linter configured.
+
+## Publishing
+
+- **Chrome Web Store**: upload the `.zip` at https://chrome.google.com/webstore/devconsole
+- **Manual CRX signing**: use `chrome://extensions` → Developer mode → "Compactar extensão". Keep the generated `.pem` to sign future versions with the same extension ID.
 
 ## Loading for development
 
@@ -26,60 +31,71 @@ Load unpacked in Chrome:
 
 ## Architecture
 
-### Entry points
+### Target platform
 
-- **`saber.js`** — content script injected into every `saber.pb.gov.br/platform/*` page. It detects the current page by `window.location.pathname` and conditionally injects DOM elements and event listeners.
-- **`options.js` / `options.html`** — the extension's settings page, accessible via the Chrome extensions menu.
-- **`dados.js`** — data collection helpers; **not referenced in `manifest.json`**, so it is legacy/unused code.
+Guarabira Educa is an **Angular 13 SPA** with **hash-based routing** (`#/` routes). The DOM is rendered asynchronously after navigation — standard `DOMContentLoaded` is not sufficient. All injection must be triggered by `MutationObserver` + `hashchange`.
 
-### Page detection pattern
+### Entry point
 
-`saber.js` uses a set of `isPagina*()` functions that check `window.location.pathname` to determine which page is active, then conditionally injects UI:
+- **`educa.js`** — the only content script. Injected into every `https://guarabira-educa.ids.inf.br/*` page. Uses `window.location.hash` regex to detect the active route, then conditionally injects UI.
 
-| Page | pathname pattern |
-|---|---|
-| Minhas Aulas | ends with `/platform/teachings` |
-| Registros de aula (list) | ends with `/class_logs` |
-| Novo/editar registro de aula | includes `/class_logs` and `/new` or `/edit` |
-| Frequências (list) | ends with `/class_frequencies` |
-| Novo/editar frequência | includes `/class_frequencies` and `/new` or `/edit` |
-| Avaliações | ends with `/class_ratings` |
-| Desempenho escolar (edit) | matches `enrollment_early_years_rating_reports/[0-9]+/edit` |
+### Route detection
 
-### The "registros" clipboard mechanism
+`educa.js` uses regex constants against `window.location.hash`:
 
-The core workflow centers on a multi-line text buffer stored in `chrome.storage.sync` under the key `registros`. It acts as a queue:
+| Constant | Hash pattern | `paginaAtual()` value |
+|---|---|---|
+| `HASH_REGISTRO_DIARIO` | `#/diarioescolar/turma/\d+/registrodiario/etapa/\d+/componente/\d+` | `'registro-diario'` |
+| `HASH_TURMA` | `#/diarioescolar/turma/\d+` | `'turma'` |
 
-- Each line is a tab-separated record (date, number of classes, content, methodology, etc.).
-- When a new form page opens, `atualizaColagemAPartirDoPrimeiroRegistroDaSerie()` pops the first line, pastes it into the `#colagem` textarea, fires a `change` event to auto-fill form fields, and saves the remaining lines back to storage.
-- Lines starting with `#` are treated as comments/navigation hints: a line like `#1238787 Turma X` triggers a redirect to `platform/teachings/1238787` and is then removed from the queue.
-- The `#registros` textarea in the injected panel and in `options.html` is the user-facing editor for this buffer.
+### Injection strategy
+
+```
+hashchange event  →  ultimoHash = null  →  tentaInjetar()
+MutationObserver  →  tentaInjetar()
+tentaInjetar()    →  isPaginaRegistroDiario()  →  injetaBotaoCopiarExcluir()
+```
+
+- `ultimoHash` prevents redundant log spam on repeated MutationObserver firings.
+- `document.getElementById('educa-copiar-excluir')` guard prevents double-injection.
+- Anchor for injection: `app-diario-escolar-turma-registro-diario .p-button-danger` (the Excluir button). The injected wrapper is inserted before it via `insertBefore`.
+
+### Injected UI — `injetaBotaoCopiarExcluir()`
+
+A `div` wrapper with `margin-right:auto` is inserted to the left of the Excluir button. It contains:
+
+| Button | ID | Shortcut | Color | Action |
+|---|---|---|---|---|
+| **C**opiar | `educa-copiar-excluir` | ALT+C | Blue `#2b58a1` | Saves all Quill editor contents to `chrome.storage.sync` under `registrodiario`; highlights editors green |
+| Li**m**par | `educa-limpar-excluir` | ALT+M | Gray `#6c757d` | Removes `registrodiario` from storage; clears editor highlights |
+| Col**a**r [v] | `educa-colar-excluir` | ALT+V | Green `#28a745` | Restores editor contents from `registrodiario`; highlights editors yellow |
+| Div**i**dir em 3 | `educa-dividir-excluir` | ALT+I | Orange `#fd7e14` | Splits first editor text by `.`, distributes sentences to each editor |
+| ? (Ajuda) | `educa-ajuda` | — | Purple `#6f42c1` | Opens Ajuda.md on GitHub in a new tab |
+
+The existing `.salvar-fab` button is assigned **ALT+S**.
+
+Button labels use `innerHTML` with `<u>` tags to underline the shortcut letter visually.
+
+### Quill editor interaction
+
+The platform uses Quill rich text editors wrapped in Angular's `p-editor`. Editors are selected with:
+```js
+document.querySelectorAll('app-diario-escolar-turma-registro-diario .ql-editor')
+```
+
+After setting `editor.innerHTML`, always dispatch:
+```js
+editor.dispatchEvent(new Event('input', { bubbles: true }));
+```
+This is required to trigger Angular change detection.
 
 ### chrome.storage keys
 
 | Key | Storage | Description |
 |---|---|---|
-| `registros` | sync | Multi-line clipboard queue (the main data) |
-| `aulas_seguidas` | sync | Default number of consecutive classes |
-| `justificativa` | sync | Default absence justification text |
-| `presenca` | sync | Default attendance status (P/A/N) |
-| `assinatura` | sync | Whether user has a subscription |
-| `turmas` | local | Array of `[label, teaching_id]` pairs for the class selector |
-| `turmaAtual` | local | Currently selected class ID |
-| `guardado` | local | A single saved snapshot of `registros` |
+| `registrodiario` | sync | Object with keys `observacoes`, `atividades`, `conteudos`, `horario` — one per Quill editor |
 
-### Injected UI elements
+### Help file
 
-- **Panel (`criaPainel()`)** — injected into list pages and form pages. Contains `#registros` textarea, Save/Clear buttons, and a dropdown with context-sensitive actions.
-- **`#colagem` textarea** — injected into new/edit form pages. User pastes tab-separated data; the `change` event handler parses it and fills the form fields.
-- **Presence selector (`adicionaSeletorDePresencao()`)** — injected into frequency edit pages to bulk-mark students present/absent.
-
-### External dependencies (vendored)
-
-- `js/luxon.min.js` — date manipulation, loaded by `manifest.json` before `saber.js`
-- `js/jquery-3.6.0.min.js` — present but **not** listed in `manifest.json` content scripts; only used in `options.html` via a `<script>` tag
-- `dist/` — Semantic UI 2.x CSS/JS, referenced by `options.html`; the platform itself uses Bootstrap 2.3.2
-
-### Messages system
-
-On panel creation, `baixa_mensagens()` fetches `docs/mensagens.json` from the raw GitHub URL and renders contextual announcements into `#mensagens`. The JSON is a flat array of `[category, text, url, icon_class]` tuples; categories map to the `isPagina*()` detection functions.
+`Ajuda.md` — user-facing documentation for teachers. References `screenshot/botoes.png`. Published at:
+`https://github.com/edusantana/guarabira-educa/blob/main/Ajuda.md`

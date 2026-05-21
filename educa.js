@@ -3,6 +3,7 @@ console.log('[educa] href:', window.location.href);
 
 const HASH_REGISTRO_DIARIO = /^#\/diarioescolar\/turma\/\d+\/registrodiario\/etapa\/\d+\/componente\/\d+/;
 const HASH_TURMA = /^#\/diarioescolar\/turma\/\d+$/;
+const HASH_PLANO_AULA = /^#\/planoaula\/turma\/\d+\/planoaula\/\d+/;
 
 function isPaginaRegistroDiario() {
   return HASH_REGISTRO_DIARIO.test(window.location.hash);
@@ -12,9 +13,14 @@ function isPaginaTurma() {
   return HASH_TURMA.test(window.location.hash);
 }
 
+function isPaginaPlanoAula() {
+  return HASH_PLANO_AULA.test(window.location.hash);
+}
+
 function paginaAtual() {
   if (isPaginaRegistroDiario()) return 'registro-diario';
   if (isPaginaTurma()) return 'turma';
+  if (isPaginaPlanoAula()) return 'plano-aula';
   return null;
 }
 
@@ -89,12 +95,21 @@ function injetaBotaoCopiarExcluir() {
   btnDividir.title = 'ALT+I — Divide o texto do primeiro editor em frases (pelo ".") e distribui nos demais editores';
   btnDividir.style.cssText = 'background:#fd7e14;color:#fff;border:none;border-radius:4px;padding:6px 18px;cursor:pointer;font-size:14px;';
 
+  var btnAjuda = document.createElement('a');
+  btnAjuda.id = 'educa-ajuda';
+  btnAjuda.innerHTML = '?';
+  btnAjuda.href = 'https://github.com/edusantana/guarabira-educa/blob/main/Ajuda.md';
+  btnAjuda.target = '_blank';
+  btnAjuda.title = 'Ajuda — como usar os botões da extensão';
+  btnAjuda.style.cssText = 'background:#6f42c1;color:#fff;border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:bold;text-decoration:none;flex-shrink:0;';
+
   var wrapper = document.createElement('div');
-  wrapper.style.cssText = 'display:flex;gap:8px;margin-right:auto;';
+  wrapper.style.cssText = 'display:flex;gap:8px;margin-right:auto;align-items:center;';
   wrapper.appendChild(btn);
   wrapper.appendChild(btnLimpar);
   wrapper.appendChild(btnColar);
   wrapper.appendChild(btnDividir);
+  wrapper.appendChild(btnAjuda);
 
   container.insertBefore(wrapper, btnExcluir);
   console.log('[educa] botões Copiar, Limpar e Colar injetados à esquerda');
@@ -183,6 +198,44 @@ function injetaBotaoCopiarExcluir() {
   });
 }
 
+function injetaBotaoDividir4PlanoAula() {
+  if (document.getElementById('educa-dividir4-planoaula')) return;
+
+  var h4 = document.querySelector('app-painel-comp-plano-aula-item h4');
+  if (!h4) return;
+
+  var btnDividir4 = document.createElement('button');
+  btnDividir4.id = 'educa-dividir4-planoaula';
+  btnDividir4.innerHTML = 'Div<u>i</u>dir em 4';
+  btnDividir4.accessKey = 'i';
+  btnDividir4.title = 'ALT+I — Divide o texto do primeiro editor em frases (pelo ".") e distribui nos demais editores';
+  btnDividir4.style.cssText = 'background:#fd7e14;color:#fff;border:none;border-radius:4px;padding:6px 18px;cursor:pointer;font-size:14px;';
+
+  h4.insertAdjacentElement('afterend', btnDividir4);
+  console.log('[educa] botão Dividir em 4 injetado em Componentes curriculares');
+
+  btnDividir4.addEventListener('click', function () {
+    var editores = document.querySelectorAll('app-painel-cadastrar-plano-aula-expandido .ql-editor');
+    if (editores.length < 4) {
+      console.log('[educa] Dividir em 4: menos de 4 editores encontrados:', editores.length);
+      return;
+    }
+
+    var texto = editores[0].innerText.trim();
+    console.log('[educa] Dividir em 4: texto do primeiro editor:', texto.substring(0, 120));
+
+    var partes = texto.split('.').map(function (s) { return s.replace(/^[ \t]+|[ \t]+$/g, ''); }).filter(function (s) { return s.length > 0; });
+    console.log('[educa] Dividir em 4: partes encontradas:', partes.length, partes);
+
+    partes.forEach(function (parte, i) {
+      if (i >= editores.length) return;
+      editores[i].innerHTML = '<p>' + parte + '.</p>';
+      editores[i].dispatchEvent(new Event('input', { bubbles: true }));
+      editores[i].style.backgroundColor = '#fff3cd';
+    });
+  });
+}
+
 var ultimoHash = null;
 
 function tentaInjetar() {
@@ -195,6 +248,7 @@ function tentaInjetar() {
 
   if (!paginaAtual()) return;
   if (isPaginaRegistroDiario()) injetaBotaoCopiarExcluir();
+  if (isPaginaPlanoAula()) injetaBotaoDividir4PlanoAula();
 }
 
 var observer = new MutationObserver(function () {
