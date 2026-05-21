@@ -21,10 +21,10 @@ A extensão **Guarabira Educa** adiciona botões extras na página de registro d
 
 1. Preencha normalmente os campos de um registro diário.
 2. Clique em **Copiar** (ou ALT+C) — os campos ficam com fundo **verde** confirmando o salvamento.
-3. Navegue para o registro diário de outra turma.
-4. Clique em **Colar** (ou ALT+V) — os campos ficam com fundo **amarelo** confirmando o preenchimento.
+3. Abra outra JANELA, Navegue para o registro diário de outra turma. Você ficará com as duas janelas abertas.
+4. Clique em **Colar** (ou ALT+V) na outra turma — os campos ficam com fundo **amarelo** confirmando o preenchimento.
 5. Repita o passo 3 e 4 para quantas turmas desejar.
-6. Quando terminar, clique em **Limpar** (ou ALT+M) para apagar o conteúdo salvo.
+6. Caso se perca, clique em **Limpar** (ou ALT+M) para apagar o conteúdo copiado da memória.
 
 ---
 
