@@ -36,12 +36,17 @@ A extensão **Guarabira Educa** adiciona botões extras na página de registro d
 
 ![](./screenshot/screen-shot-diario-classe.png)
 
-1. Preencha normalmente os campos de um registro diário.
-2. Clique em **Copiar** (ou ALT+C) — os campos ficam com fundo **verde** confirmando o salvamento.
-3. Abra outra JANELA, Navegue para o registro diário de outra turma. Você ficará com as duas janelas abertas.
-4. Clique em **Colar** (ou ALT+V) na outra turma — os campos ficam com fundo **amarelo** confirmando o preenchimento.
-5. Repita o passo 3 e 4 para quantas turmas desejar.
-6. Caso se perca, clique em **Limpar** (ou ALT+M) para apagar o conteúdo copiado da memória.
+1. Selecione a turma de referência, que você irá preencher primeiro.
+2. Preencha normalmente o campo de observações diário.
+3. Preencha as atividades trabalhadas
+4. Preencha os conteúdos
+  4.1 Não mostrado na imagem, aperte ALT+S para salvar.
+5. Clique em **Copiar** (ou ALT+C) — os campos ficam com fundo **verde** confirmando o salvamento.
+6. Abra outra JANELA, Navegue para o registro diário de outra turma. Você ficará com as duas janelas abertas. Selecione a turma de destino.
+7. Selecione a data da segunda turma (nem sempre é o mesmo dia)
+8. Clique em **Colar** (ou ALT+V) na turma de destino — os campos ficam com fundo **amarelo** confirmando o preenchimento.
+9. Repita os passos para quantas turmas desejar.
+10. Caso se perca, clique em **Limpar** (ou ALT+M) para apagar o conteúdo copiado da memória.
 
 ---
 
